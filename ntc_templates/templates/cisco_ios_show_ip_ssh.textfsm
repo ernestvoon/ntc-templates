@@ -1,0 +1,13 @@
+Value VERSION (\d.\d)
+Value AUTH_TIMEOUT (\d+)
+Value AUTH_RETRIES (\d+)
+
+
+Start
+  ^SSH\sEnabled\s-\sversion\s${VERSION}*$$
+  ^Authentication\stimeout:\s${AUTH_TIMEOUT}\ssecs;\sAuthentication\sretries:\s${AUTH_RETRIES}*$$
+  ^\s*$$
+  # Capture time-stamp if vty line has command time-stamping turned on
+  ^Load\s+for\s+
+  ^Time\s+source\s+is
+  ^. -> Error

@@ -1,0 +1,143 @@
+Value TTY (\d{1,2})
+# Type of line 
+Value TYPE (VTY|CTY|AUX|TTY|Ipt)
+# A value of F indicates that autobaud has been confugred; a hyphen indicates that it has not been configured
+Value AUTOBAUD (F)
+# The type of modem signals that have been configured for the line
+Value MODEM (callin|callout|cts-req|DTR-Act|inout|RlisCD)
+Value ROTARY (\d+)
+Value ACCESS_LIST_OUT ([\w\d]+)
+Value ACCESS_LIST_IN ([\w\d]+)
+# The total number of connections made to the line
+Value USES (\d+)
+Value LINE (\d{1,2})
+# The custom location value defined by the user
+Value LOCATION ([^\"]*)
+# The type of terminal used to connect to the switch or a value configured by the user
+Value TERMINAL_TYPE ([^\"]*)
+# Length of the terminal or screen display in rows
+Value LENGTH (\d+)
+# Width of the terminal or screen display in columns
+Value WIDTH (\d+)
+# Transmit rate/receive rate of the line in bps
+Value BAUD_TX (\d+)
+Value BAUD_RX (\d+)
+# The status of the line
+Value List STATUS ([^,]*)
+# The terminal capabilities
+Value List CAPABILITIES ([^,]*)
+Value MODEM_STATE (\w+)
+# The idle time of the terminal before disconnecting the session
+Value EXEC_TIMEOUT (\d{1,2}:\d{1,2}:\d{1,2})
+# The idle time of the session before disconnecting the session
+Value SESSION_TIMEOUT (never|\d{1,2}:\d{1,2}:\d{1,2})
+Value MODEM_TIMEOUT (\d{1,2}:\d{1,2}:\d{1,2})
+# The interval that the server waits for a reply to a login
+Value LOGIN_RESPONSE_TIMEOUT (never|\d{1,2}:\d{1,2}:\d{1,2})
+# Current set transport method set by the user (or taken by default) from the transport input line configuration command
+Value List INPUT_TRANSPORT (\w+[^\s\.])
+# Current set transport method set by the user (or taken by default) from the transport output line configuration command
+Value List OUTPUT_TRANSPORT (\w+[^\s\.])
+# Current set transport method, set by the user (or taken by default) from the transport preferred line configuration command
+Value PREFERRED_TRANSPORT (all|none|acercon|lat|mop|nasi|pad|rlogin|ssh|telnet|udptn|v120)
+
+
+Start
+  ^\s*Tty\s+Typ\s+Tx/Rx\s+A\s+Modem\s+Roty\s+AccO\s+AccI\s+Uses\s+Noises\s+Overruns
+  ^[Al\*]*\s*${TTY}\s+${TYPE}\s+(?:\d+\/\d+\s+)?${AUTOBAUD}?-?\s+${MODEM}?-?\s+${ROTARY}?-?\s+${ACCESS_LIST_IN}?-?\s+${ACCESS_LIST_OUT}?-?\s+${USES}
+  ^Line\s${LINE},\sLocation:\s"${LOCATION}",\sType:\s"${TERMINAL_TYPE}"$$
+  ^Length:\s${LENGTH}\slines,\sWidth:\s${WIDTH}\scolumns$$
+  ^Baud\srate\s\(TX/RX\)\sis\s${BAUD_TX}/${BAUD_RX}
+  ^Status:\s(?:[\w\s]*\,\s){0}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){1}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){2}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){3}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){4}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){5}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){6}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){7}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){8}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){9}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){10}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){11}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){12}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){13}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){14}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){15}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){16}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){17}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){18}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){19}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){20}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){21}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){22}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){23}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){24}${STATUS} -> Continue
+  ^Status:\s(?:[\w\s]*\,\s){25}${STATUS} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){0}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){1}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){2}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){3}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){4}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){5}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){6}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){7}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){8}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){9}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){10}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){11}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){12}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){13}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){14}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){15}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){16}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){17}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){18}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){19}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){20}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){21}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){22}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){23}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){24}${CAPABILITIES} -> Continue
+  ^Capabilities:\s(?:[\w\s]*\,\s){25}${CAPABILITIES} -> Continue
+  ^Modem\sstate:\s${MODEM_STATE}
+  ^Special\sChars:\s*
+  ^\s*.+
+  ^Timeouts:\s+Idle\sEXEC\s+Idle\sSession\s+Modem\s+Answer\s+Session\s+Dispatch
+  ^\s*${EXEC_TIMEOUT}\s+${SESSION_TIMEOUT}\s+${MODEM_TIMEOUT}
+  ^\s+Idle\sSession\sDisconnect\sWarning
+  ^\s+never|\d{1,2}:\d{1,2}:\d{1,2}
+  ^\s+Login-sequence User Response
+  ^\s+${LOGIN_RESPONSE_TIMEOUT}
+  ^\s+Autoselect\sInitial\sWait
+  ^\s+(?:not\sset)|\d{1,2}:\d{1,2}:\d{1,2}
+  ^Modem\stype\sis\s
+  ^Session\slimit\sis\s
+  ^Time\ssince\sactivation:\s
+  ^
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){0}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){1}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){2}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){3}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){4}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){5}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){6}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){7}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){8}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\sinput\stransports\sare\s(?:\w+\s|\.){9}${INPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){0}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){1}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){2}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){3}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){4}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){5}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){6}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){7}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){8}${OUTPUT_TRANSPORT}. -> Continue
+  ^Allowed\soutput\stransports\sare\s(?:\w+\s|\.){9}${OUTPUT_TRANSPORT}. -> Continue
+  ^Preferred\stransport\sis\s${PREFERRED_TRANSPORT}.
+  ^\s*$$
+  # Capture time-stamp if vty line has command time-stamping turned on
+  ^Load\s+for\s+
+  ^Time\s+source\s+is
+  ^. -> Error

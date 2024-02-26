@@ -1,0 +1,18 @@
+Value KEY (\d+)
+Value KEY_STRING ([^"]+)
+Value ACCEPT_LIFETIME_START ([^()]+)
+Value ACCEPT_LIFETIME_END ([^()]+)
+Value SEND_LIFETIME_START ([^()]+)
+Value SEND_LIFETIME_END ([^()]+)
+
+
+Start
+  ^key\s${KEY}\s--\stext\s"${KEY_STRING}"
+  ^accept\slifetime\s(${ACCEPT_LIFETIME_START})\s-\s(${ACCEPT_LIFETIME_END})
+  ^send\slifetime\s(${SEND_LIFETIME_START})\s-\s(${SEND_LIFETIME_END})
+  ^\s*$$
+  ^. -> Error
+  
+  # Capture time-stamp if vty line has command time-stamping turned on
+  ^Load\s+for\s+
+  ^Time\s+source\s+is

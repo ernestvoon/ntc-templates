@@ -1,0 +1,51 @@
+Value ADDRESS (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})
+# The local client is synchronised to this peer or selected for possible synchronisation, when 'our_master' fails or the client loses sync.
+Value PREFER (our_master|selected)
+# Sanity tests are used in order to test the NTP packet received from a server.
+# 'insane', the sanity checks have failed, so time from the server is not accepted. The server is unsynced.
+# 'valid', the peer/server time is valid. The local client accepts this time if this peer becomes the master.
+# 'invalid', the peer/server time is invalid, and time will not be accepted.
+Value SANE (valid|invalid)
+# NTP uses the concept of a stratum in order to describe how far away a machine is from an authoratative time source.
+Value STRATUM (\d+)
+# The state of the local client/peer.
+Value LOCAL_MODE (\w+)
+Value PEER_MODE (\w+)
+# The poll interval from the local poll to the peer or from the peer to the local machine.
+Value LOCAL_POLL (\d+)
+Value PEER_POLL (\d+)
+# This field shows whether the last eight packets were received by the NTP process.
+Value REACH (\d+)
+# This is the round trip delay to the peer.
+Value DELAY (\d+.\d+)
+# Offset is the clock difference between the peers or between the master and client.
+# A positive value indicates the server clock is higher.
+# A negative value indicates the client clock is higher.
+Value OFFSET (-*\d+.\d+)
+# This is the NTP version number used by the peer.
+Value VERSION (\d+)
+
+
+Start
+  ^${ADDRESS}\sconfigured,\sipv4,\s${PREFER},\s\w+,\s${SANE},\sstratum\s${STRATUM}*$$ -> Continue
+  ^${ADDRESS}\sconfigured,\sipv4,\s\w+,\s${SANE},\sunsynced,\sstratum\s${STRATUM}*$$ -> Continue
+  ^${ADDRESS}\sconfigured,\sipv4,\s\w+,\s${SANE},\sstratum\s${STRATUM}*$$ -> Continue
+  ^ref\sID\s\S+,\stime\S+\s\S+
+  ^our\smode\s${LOCAL_MODE},\speer\smode\s${PEER_MODE},\sour\spoll\sintvl\s${LOCAL_POLL},\speer\spoll\sintvl\s${PEER_POLL}*$$
+  ^.*,\sreach\s${REACH},\s*
+  ^delay\s${DELAY}\smsec,\soffset\s${OFFSET}\smsec,\s*
+  ^.*,\sversion\s${VERSION}*$$ -> Record
+  ^assoc\sID\s\d+,\sassoc\sname\s\S+,
+  ^assoc\sin\spackets\s\d+,\sassoc\sout\spackets\s\d+,\sassoc\serror\spackets\s\d+
+  ^org\stime\s\S+\s\S+
+  ^rcv\stime\s\S+\s\S+
+  ^xmt\stime\s\S+\s\S+
+  ^filtdelay\s=\s+.+
+  ^filtoffset\s=\s+.+
+  ^filterror\s=\s+.+
+  ^\s*$$
+  ^. -> Error
+
+  # Capture time-stamp if vty line has command time-stamping turned on
+  ^Load\s+for\s+
+  ^Time\s+source\s+is
